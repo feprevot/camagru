@@ -33,7 +33,7 @@ function register() {
 
         if (empty($errors)) {
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-            $token = bin2hex(random_bytes(32)); // 64 chars
+            $token = bin2hex(random_bytes(32));
 
             if (create_user($username, $email, $hashed_password, $token)) {
                 echo "<p>Compte créé ! Un email de confirmation a été envoyé à $email.</p>";
@@ -71,7 +71,6 @@ function login() {
             } elseif (!$user['is_confirmed']) {
                 $errors[] = "Votre compte n'est pas encore confirmé.";
             } else {
-                // Connexion réussie : stocker l'utilisateur en session
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['username'] = $user['username'];
                 echo "<p style='color:green;'>Bienvenue, {$user['username']} !</p>";
