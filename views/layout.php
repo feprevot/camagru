@@ -12,6 +12,7 @@
     <nav>
         <a href="/">Accueil</a> |
         <a href="/gallery">Galerie</a> |
+        <a href="/settings">Paramètres</a> |
         <a href="/logout">Se déconnecter</a>
     </nav>
 </header>

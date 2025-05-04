@@ -21,6 +21,9 @@ if (str_starts_with($uri, '/login')) {
 } elseif ($uri === '/logout') {
     require __DIR__ . '/../controllers/AuthController.php';
     logout();
+} elseif ($uri === '/settings') {
+    require __DIR__ . '/../controllers/UserController.php';
+    settings();
 } else {
     http_response_code(404);
     echo "404 - Page not found";
