@@ -9,6 +9,6 @@
 
     <button type="submit">Se connecter</button>
 </form>
-
+<p><a href="/forgot">Mot de passe oublié ?</a></p>
 <p>Pas encore inscrit ? <a href="/register">Créer un compte</a></p>
 <p><a href="/forgot">Mot de passe oublié ?</a></p>

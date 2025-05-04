@@ -109,3 +109,72 @@ function logout() {
     header("Location: /login");
     exit;
 }
+
+
+function forgot_password() {
+    global $pdo;
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $email = trim($_POST['email'] ?? '');
+
+        if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $stmt = $pdo->prepare("SELECT id FROM users WHERE email = :email");
+            $stmt->execute([':email' => $email]);
+            $user = $stmt->fetch();
+
+            if ($user) {
+                $token = bin2hex(random_bytes(32));
+                $stmt = $pdo->prepare("UPDATE users SET reset_token = :token WHERE id = :id");
+                $stmt->execute([':token' => $token, ':id' => $user['id']]);
+
+                $link = "https://localhost:8443/reset?token=$token";
+                $subject = "Réinitialisation du mot de passe Camagru";
+                $message = "Bonjour,\n\nCliquez ici pour réinitialiser votre mot de passe :\n$link";
+                mail($email, $subject, $message, "From: no-reply@camagru.local");
+            }
+        }
+
+        echo "<p>Si un compte existe avec cet e‑mail, un lien de réinitialisation a été envoyé.</p>";
+        return;
+    }
+
+    require __DIR__ . '/../views/auth/forgot.php';
+}
+
+
+function reset_password() {
+    global $pdo;
+
+    $token = $_GET['token'] ?? '';
+    if (!$token) {
+        echo "Lien invalide.";
+        return;
+    }
+
+    $stmt = $pdo->prepare("SELECT id FROM users WHERE reset_token = :token");
+    $stmt->execute([':token' => $token]);
+    $user = $stmt->fetch();
+
+    if (!$user) {
+        echo "Lien invalide ou expiré.";
+        return;
+    }
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $pass = $_POST['password'] ?? '';
+        $confirm = $_POST['password_confirm'] ?? '';
+
+        if ($pass === $confirm && preg_match('/(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,}/', $pass)) {
+            $hashed = password_hash($pass, PASSWORD_DEFAULT);
+            $stmt = $pdo->prepare("UPDATE users SET password = :pass, reset_token = NULL WHERE id = :id");
+            $stmt->execute([':pass' => $hashed, ':id' => $user['id']]);
+
+            echo "<p>Mot de passe réinitialisé. <a href=\"/login\">Se connecter</a></p>";
+            return;
+        } else {
+            echo "<p style='color:red;'>Mots de passe invalides ou différents.</p>";
+        }
+    }
+
+    require __DIR__ . '/../views/auth/reset.php';
+}

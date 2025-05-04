@@ -5,5 +5,6 @@ CREATE TABLE IF NOT EXISTS users (
     password VARCHAR(255) NOT NULL,
     is_confirmed BOOLEAN DEFAULT FALSE,
     confirmation_token VARCHAR(64),
+    reset_token VARCHAR(64),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

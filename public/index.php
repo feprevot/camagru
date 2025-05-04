@@ -24,6 +24,12 @@ if (str_starts_with($uri, '/login')) {
 } elseif ($uri === '/settings') {
     require __DIR__ . '/../controllers/UserController.php';
     settings();
+} elseif ($uri === '/forgot') {
+    require __DIR__ . '/../controllers/AuthController.php';
+    forgot_password();
+} elseif (str_starts_with($uri, '/reset')) {
+    require __DIR__ . '/../controllers/AuthController.php';
+    reset_password();
 } else {
     http_response_code(404);
     echo "404 - Page not found";
