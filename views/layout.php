@@ -12,8 +12,7 @@
     <nav>
         <a href="/">Accueil</a> |
         <a href="/gallery">Galerie</a> |
-        <a href="/login">Connexion</a> |
-        <a href="/register">Inscription</a>
+        <a href="/logout">Se déconnecter</a>
     </nav>
 </header>
 

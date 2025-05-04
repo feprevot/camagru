@@ -17,6 +17,10 @@ if (str_starts_with($uri, '/login')) {
 } elseif (str_starts_with($uri, '/confirm')) {
     require __DIR__ . '/../controllers/AuthController.php';
     confirm_account();
+
+} elseif ($uri === '/logout') {
+    require __DIR__ . '/../controllers/AuthController.php';
+    logout();
 } else {
     http_response_code(404);
     echo "404 - Page not found";

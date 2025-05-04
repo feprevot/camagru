@@ -101,3 +101,11 @@ function confirm_account() {
         echo "<p style='color:red;'>Lien invalide ou déjà utilisé.</p>";
     }
 }
+
+
+function logout() {
+    session_unset();
+    session_destroy();
+    header("Location: /login");
+    exit;
+}
