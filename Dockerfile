@@ -28,5 +28,10 @@ RUN chmod +x /entrypoint.sh
 
 RUN [ ! -f /usr/sbin/sendmail ] || rm /usr/sbin/sendmail && ln -s /usr/bin/msmtp /usr/sbin/sendmail
 
+RUN mkdir -p /var/www/app/public/uploads && \
+    chown -R www-data:www-data /var/www/app/public/uploads && \
+    chmod -R 755 /var/www/app/public/uploads
+
+
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["apache2-foreground"]
