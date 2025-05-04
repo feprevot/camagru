@@ -51,3 +51,14 @@ function confirm_user($token) {
 
     return false;
 }
+
+
+function send_confirmation_email($email, $token) {
+    $subject = "Confirmation de votre compte Camagru";
+    $link = "https://localhost:8443/confirm?token=" . urlencode($token);
+
+    $message = "Bonjour,\n\nCliquez sur ce lien pour confirmer votre compte :\n$link\n\nMerci !";
+    $headers = "From: no-reply@camagru.local";
+
+    return mail($email, $subject, $message, $headers);
+}

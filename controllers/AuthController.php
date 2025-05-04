@@ -36,10 +36,9 @@ function register() {
             $token = bin2hex(random_bytes(32));
 
             if (create_user($username, $email, $hashed_password, $token)) {
-                echo "<p>Compte créé ! Un email de confirmation a été envoyé à $email.</p>";
-                echo "<p><em>(Simulation)</em> Lien : <a href=\"/confirm?token=$token\">Confirmer</a></p>";
-                echo "<p><a href=\"/login\">Se connecter</a></p>";
-                return;
+                send_confirmation_email($email, $token);
+                header("Location: /login");
+                exit;
             } else {
                 $errors[] = "Erreur lors de la création du compte.";
             }
@@ -73,10 +72,9 @@ function login() {
             } else {
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['username'] = $user['username'];
-                echo "<p style='color:green;'>Bienvenue, {$user['username']} !</p>";
-                echo "<p><a href='/'>Aller à l'accueil</a></p>";
-                return;
-            }
+                header("Location: /");
+                exit;
+                            }
         }
 
         foreach ($errors as $error) {

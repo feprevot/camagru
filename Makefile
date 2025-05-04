@@ -17,4 +17,8 @@ clean:
 
 restart: down up
 
+reset-db:
+	docker compose down -v
+	docker compose up --build -d
+
 .PHONY: up down rebuild logs clean restart
