@@ -8,7 +8,6 @@ const loadingIndicator = document.getElementById('loading');
 async function loadImages() {
     if (loading || done) return;
     loading = true;
-    loadingIndicator.innerText = 'Chargement...';
 
     try {
         const res = await fetch(`/api/gallery?page=${currentPage}`);
@@ -16,7 +15,7 @@ async function loadImages() {
 
         if (images.length === 0) {
             done = true;
-            loadingIndicator.innerText = 'Plus d\'images.';
+            loadingIndicator.innerText = '';
             return;
         }
 

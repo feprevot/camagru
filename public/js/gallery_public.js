@@ -7,7 +7,6 @@ async function load() {
   loading = true;
   const res  = await fetch(`/api/gallery?page=${page}`);
   const imgs = await res.json();
-  if (imgs.length === 0) { done = true; loadEl.textContent = 'Plus rien.'; return; }
 
   imgs.forEach(i => {
     const d = document.createElement('div');

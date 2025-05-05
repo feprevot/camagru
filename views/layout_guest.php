@@ -9,7 +9,7 @@
 <body>
 
 <header>
-    <h1><a href="/">Camagru</a></h1>
+    <h1>Camagru</h1>
     <nav>
         <a href="/">Gallery</a>
         <a href="/login">Login</a> |

@@ -164,6 +164,12 @@
     box-shadow: 0 4px 10px #00000014;
 }
 
+.auth-wrapper img{
+    max-width:100%;
+    height:auto;
+    display:block;
+}
+
 .auth-wrapper h2 {
     margin-bottom: 1.2rem;
     color: #0077ff;
@@ -191,5 +197,3 @@
     border-top: 1px solid #e5e5e5;
 }
 
-.error   { color:#e74c3c; }
-.success { color:#27ae60; }

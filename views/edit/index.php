@@ -14,8 +14,9 @@
             <label for="overlay-select">Overlay :</label>
             <select id="overlay-select">
                 <option value="">-- Get an overlay --</option>
-                <option value="/images/cadre1.png">good 1</option>
-                <option value="/images/cat-laser.png">Chat laser</option>
+                <option value="none">None</option>
+                <option value="/images/first.png">Fairy Dream</option>
+                <option value="/images/Bunny.png">Bunny Ears</option>
             </select>
 
             <button id="capture-btn" disabled>Catch it</button>

@@ -10,6 +10,10 @@ function show_gallery() {
     include __DIR__ . '/../views/layout.php';
 }
 
+function show_public_gallery() {
+    $content = __DIR__ . '/../views/gallery/index_public.php';
+    include __DIR__ . '/../views/layout_guest.php';
+}
 
 require_once __DIR__ . '/../models/Image.php';
 
@@ -25,97 +29,57 @@ function edit_page() {
     include __DIR__ . '/../views/layout.php';
 }
 
-
-function upload_image() {
-    error_log("upload_image appelée");
-
+function upload_image()
+{
     if (!isset($_SESSION['user_id'])) {
-        error_log("Non autorisé");
         http_response_code(401);
-        echo "Non autorisé";
-        return;
+        exit("Non autorisé");
     }
 
-    if (!empty($_FILES['file'])) {
-        $file = $_FILES['file'];
-
-        if ($file['error'] === UPLOAD_ERR_OK) {
-            $tmpName = $file['tmp_name'];
-            $filename = uniqid('img_') . '.png';
-            $uploadDir = __DIR__ . '/../public/uploads/';
-            $destination = $uploadDir . $filename;
-
-            if (!is_dir($uploadDir)) {
-                mkdir($uploadDir, 0755, true);
-            }
-
-            if (move_uploaded_file($tmpName, $destination)) {
-                save_image($_SESSION['user_id'], $filename);
-                header("Location: /edit");
-                exit;
-            } else {
-                echo "Erreur lors de la sauvegarde.";
-            }
-        } else {
-            echo "Erreur d'upload : " . $file['error'];
-        }
-        return;
+    $payload = json_decode(file_get_contents('php://input'), true);
+    if (!$payload || !isset($payload['image'])) {
+        http_response_code(400); exit('Bad request');
     }
 
-    $raw = file_get_contents("php://input");
-    $data = json_decode($raw, true);
+    if (!preg_match('#^data:image/[^;]+;base64,#', $payload['image'])) {
+        http_response_code(400); exit('Format non supporté');
+    }
+    $raw = base64_decode(substr($payload['image'], strpos($payload['image'], ',')+1));
+    if ($raw === false) { http_response_code(400); exit('decode error'); }
 
-    if (!isset($data['image'])) {
-        error_log("Image manquante");
-        http_response_code(400);
-        echo "Image manquante";
-        return;
+    $src = imagecreatefromstring($raw);
+    if (!$src) { http_response_code(500); exit('GD error'); }
+
+    $ovPath = $payload['overlay'] ?? '';
+    if ($ovPath && $ovPath !== 'none') {
+        $ovAbs = __DIR__ . '/../public' . $ovPath;
+        if (file_exists($ovAbs)) {
+            $overlay = imagecreatefrompng($ovAbs);
+            $dstW = imagesx($src);
+            $dstH = imagesy($src);
+            $tmp   = imagecreatetruecolor($dstW, $dstH);
+            imagesavealpha($tmp, true);
+            $trans = imagecolorallocatealpha($tmp, 0,0,0,127);
+            imagefill($tmp, 0,0, $trans);
+            imagecopyresampled($tmp, $overlay, 0,0, 0,0, $dstW,$dstH,
+                               imagesx($overlay), imagesy($overlay));
+
+            imagecopy($src, $tmp, 0,0, 0,0, $dstW, $dstH);
+            imagedestroy($tmp); imagedestroy($overlay);
+        }
     }
 
-    $imgData = $data['image'];
+    $name = uniqid('img_').'.png';
+    $path = __DIR__ . '/../public/uploads/'.$name;
+    imagesavealpha($src, true);
+    if (!imagepng($src, $path)) { imagedestroy($src); http_response_code(500); exit('save error'); }
+    imagedestroy($src);
 
-    if (preg_match('/^data:image\/png;base64,/', $imgData)) {
-        $imgData = substr($imgData, strpos($imgData, ',') + 1);
-        $imgData = base64_decode($imgData);
+    save_image($_SESSION['user_id'], $name);
 
-        if ($imgData === false) {
-            error_log("Erreur de décodage base64");
-            http_response_code(400);
-            echo "Erreur de décodage";
-            return;
-        }
-
-        $filename = uniqid('img_') . '.png';
-        $uploadDir = __DIR__ . '/../public/uploads/';
-        $path = $uploadDir . $filename;
-
-        if (!is_dir($uploadDir)) {
-            mkdir($uploadDir, 0755, true);
-        }
-
-        if (!file_put_contents($path, $imgData)) {
-            error_log("Erreur d'écriture du fichier $path");
-            http_response_code(500);
-            echo "Erreur lors de la sauvegarde du fichier.";
-            return;
-        }
-
-        require_once __DIR__ . '/../models/Image.php';
-        if (!save_image($_SESSION['user_id'], $filename)) {
-            error_log("Erreur insertion BDD");
-            http_response_code(500);
-            echo "Erreur d'enregistrement en base de données.";
-            return;
-        }
-
-        error_log("Image enregistrée avec succès !");
-        echo "Image enregistrée";
-    } else {
-        error_log("Format non supporté");
-        http_response_code(400);
-        echo "Format non supporté";
-    }
+    echo 'ok';
 }
+
 
 require_once __DIR__ . '/../models/social.php';
 

@@ -12,8 +12,13 @@ if (str_starts_with($uri, '/login')) {
     require __DIR__ . '/../controllers/AuthController.php';
     register();
 } elseif ($uri === '/' || $uri === '/gallery') {
-    require __DIR__ . '/../controllers/ImageController.php';
-    show_gallery();
+    if (isset($_SESSION['user_id'])) {
+        require __DIR__.'/../controllers/ImageController.php';
+        show_gallery();
+    } else {
+        require __DIR__.'/../controllers/ImageController.php';
+        show_public_gallery();
+    }
 } elseif (str_starts_with($uri, '/confirm')) {
     require __DIR__ . '/../controllers/AuthController.php';
     confirm_account();
