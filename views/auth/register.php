@@ -1,21 +1,29 @@
 <h2>Register</h2>
 
-<form method="POST" action="/register">
-    <label for="username">Username</label><br>
-    <input type="text" id="username" name="username" required><br><br>
+<?php if (!empty($errors)): ?>
+    <ul class="error">
+        <?php foreach ($errors as $e): ?>
+            <li><?= htmlspecialchars($e) ?></li>
+        <?php endforeach; ?>
+    </ul>
+<?php endif; ?>
 
-    <label for="email">e-mail</label><br>
-    <input type="email" id="email" name="email" required><br><br>
+<form method="post" action="/register">
+    <label>Username</label>
+    <input name="username" required value="<?= htmlspecialchars($_POST['username'] ?? '') ?>">
 
-    <label for="password">Password</label><br>
-    <input type="password" id="password" name="password" required
+    <label>E‑mail</label>
+    <input type="email" name="email" required value="<?= htmlspecialchars($_POST['email'] ?? '') ?>">
+
+    <label>Password</label>
+    <input type="password" name="password" required
            pattern="(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,}"
-           title="8 chars, 1 caps, 1 special char"><br><br>
+           title="8+ chars, 1 upper, 1 digit">
 
-    <label for="password_confirm">Confirm it</label><br>
-    <input type="password" id="password_confirm" name="password_confirm" required><br><br>
+    <label>Confirm password</label>
+    <input type="password" name="password_confirm" required>
 
     <button type="submit">Create my account</button>
 </form>
 
-<p>Already registered? <a href="/login">Login</a></p>
+<p>Already registered ? <a href="/login">Login</a></p>

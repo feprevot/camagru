@@ -1,13 +1,22 @@
 <h2>Login</h2>
 
-<form method="POST" action="/login">
-    <label for="username">Username</label><br>
-    <input type="text" id="username" name="username" required><br><br>
+<?php if (!empty($errors)): ?>
+    <ul class="error">
+        <?php foreach ($errors as $e): ?>
+            <li><?= htmlspecialchars($e) ?></li>
+        <?php endforeach; ?>
+    </ul>
+<?php endif; ?>
 
-    <label for="password">Mot de passe</label><br>
-    <input type="password" id="password" name="password" required><br><br>
+<form method="post" action="/login">
+    <label for="username">Username</label>
+    <input id="username" name="username" required>
+
+    <label for="password">Password</label>
+    <input id="password" name="password" type="password" required>
 
     <button type="submit">Login</button>
 </form>
-<p><a href="/forgot">Forget your password ?</a></p>
-<p>Not registered? <a href="/register">Create an account</a></p>
+
+<p><a href="/forgot">Forgot password ?</a></p>
+<p>Not registered ? <a href="/register">Create an account</a></p>

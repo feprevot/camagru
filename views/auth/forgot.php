@@ -1,6 +1,10 @@
-<h2>Forget your password</h2>
-<form method="post">
-    <label>e-mail</label>
-    <input type="email" name="email" required>
-    <button type="submit">Send a link</button>
-</form>
+<div class="auth-wrapper">
+
+    <h2>Forgot your password ?</h2>
+
+    <form method="post">
+        <label>E‑mail</label>
+        <input type="email" name="email" required>
+        <button type="submit">Send reset link</button>
+    </form>
+</div>

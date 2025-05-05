@@ -194,3 +194,4 @@ function delete_image() {
     header("Location: /edit");
     exit;
 }
+
