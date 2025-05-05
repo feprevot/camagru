@@ -18,3 +18,13 @@ function get_user_images($user_id) {
     $stmt->execute([':id' => $user_id]);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
+
+
+function get_public_images($limit, $offset) {
+    global $pdo;
+    $stmt = $pdo->prepare("SELECT images.*, users.username FROM images JOIN users ON images.user_id = users.id ORDER BY created_at DESC LIMIT :limit OFFSET :offset");
+    $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+    $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}

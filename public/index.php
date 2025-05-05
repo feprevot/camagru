@@ -36,6 +36,18 @@ if (str_starts_with($uri, '/login')) {
 } elseif ($uri === '/upload') {
     require __DIR__ . '/../controllers/ImageController.php';
     upload_image();
+} elseif ($uri === '/delete') {
+    require __DIR__ . '/../controllers/ImageController.php';
+    delete_image();
+} elseif (str_starts_with($uri, '/api/gallery')) {
+    require __DIR__ . '/../controllers/ImageController.php';
+    api_gallery();
+} elseif ($uri === '/like') {
+    require __DIR__ . '/../controllers/SocialController.php';
+    like_image();
+} elseif ($uri === '/comment') {
+    require __DIR__ . '/../controllers/SocialController.php';
+    comment_image();
 } else {
     http_response_code(404);
     echo "404 - Page not found";

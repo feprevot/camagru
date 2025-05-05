@@ -36,6 +36,32 @@ function upload_image() {
         return;
     }
 
+    if (!empty($_FILES['file'])) {
+        $file = $_FILES['file'];
+
+        if ($file['error'] === UPLOAD_ERR_OK) {
+            $tmpName = $file['tmp_name'];
+            $filename = uniqid('img_') . '.png';
+            $uploadDir = __DIR__ . '/../public/uploads/';
+            $destination = $uploadDir . $filename;
+
+            if (!is_dir($uploadDir)) {
+                mkdir($uploadDir, 0755, true);
+            }
+
+            if (move_uploaded_file($tmpName, $destination)) {
+                save_image($_SESSION['user_id'], $filename);
+                header("Location: /edit");
+                exit;
+            } else {
+                echo "Erreur lors de la sauvegarde.";
+            }
+        } else {
+            echo "Erreur d'upload : " . $file['error'];
+        }
+        return;
+    }
+
     $raw = file_get_contents("php://input");
     $data = json_decode($raw, true);
 
@@ -89,4 +115,62 @@ function upload_image() {
         http_response_code(400);
         echo "Format non supporté";
     }
+}
+
+function api_gallery() {
+    global $pdo;
+
+    $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
+    $limit = 5;
+    $offset = ($page - 1) * $limit;
+
+    $stmt = $pdo->prepare("SELECT images.*, users.username FROM images JOIN users ON images.user_id = users.id ORDER BY created_at DESC LIMIT :limit OFFSET :offset");
+    $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+    $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+    $stmt->execute();
+
+    $images = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    header('Content-Type: application/json');
+    echo json_encode($images);
+}
+
+
+
+function delete_image() {
+    if (!isset($_SESSION['user_id'])) {
+        http_response_code(401);
+        echo "Non autorisé";
+        return;
+    }
+
+    $filename = $_POST['filename'] ?? '';
+    if (empty($filename)) {
+        http_response_code(400);
+        echo "Fichier manquant";
+        return;
+    }
+
+    global $pdo;
+
+    $stmt = $pdo->prepare("SELECT * FROM images WHERE filename = :filename AND user_id = :user_id");
+    $stmt->execute([
+        ':filename' => $filename,
+        ':user_id' => $_SESSION['user_id']
+    ]);
+
+    $image = $stmt->fetch();
+
+    if ($image) {
+        $path = __DIR__ . '/../public/uploads/' . $filename;
+        if (file_exists($path)) {
+            unlink($path);
+        }
+
+        $deleteStmt = $pdo->prepare("DELETE FROM images WHERE id = :id");
+        $deleteStmt->execute([':id' => $image['id']]);
+    }
+
+    header("Location: /edit");
+    exit;
 }

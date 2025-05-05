@@ -8,6 +8,7 @@ services:
       - "8443:443"
     volumes:
       - ./:/var/www/html
+      - uploads_data:/var/www/app/public/uploads
     env_file:
       - .env
     depends_on:
@@ -23,5 +24,7 @@ services:
     volumes:
       - db_data:/var/lib/mysql
       - ./docker/sql:/docker-entrypoint-initdb.d
+
 volumes:
   db_data:
+  uploads_data:

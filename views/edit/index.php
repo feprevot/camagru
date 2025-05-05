@@ -19,6 +19,11 @@
             </select>
 
             <button id="capture-btn" disabled>Capturer</button>
+            <form id="upload-form" enctype="multipart/form-data" method="POST" action="/upload">
+                <label for="file">Ou téléversez une image :</label>
+                <input type="file" name="file" accept="image/*" required>
+                <input type="submit" value="Envoyer">
+            </form>
         </div>
     </div>
 
@@ -26,8 +31,15 @@
         <h3>Vos images</h3>
         <div class="thumbnails" style="display: flex; flex-direction: column; gap: 0.5rem;">
             <?php foreach ($images as $img): ?>
-                <img src="/uploads/<?= htmlspecialchars($img['filename']) ?>" width="120">
-             <?php endforeach; ?>
+                <div style="position: relative;">
+                    <img src="/uploads/<?= htmlspecialchars($img['filename']) ?>" width="120">
+                    <form method="POST" action="/delete" onsubmit="return confirm('Supprimer cette image ?');">
+                        <input type="hidden" name="filename" value="<?= htmlspecialchars($img['filename']) ?>">
+                        <button type="submit">🗑️</button>
+                    </form>
+                </div>
+            <?php endforeach; ?>
+
         </div>
     </aside>
 </div>
