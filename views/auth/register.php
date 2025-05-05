@@ -1,21 +1,21 @@
-<h2>Inscription</h2>
+<h2>Register</h2>
 
 <form method="POST" action="/register">
-    <label for="username">Nom d'utilisateur</label><br>
+    <label for="username">Username</label><br>
     <input type="text" id="username" name="username" required><br><br>
 
-    <label for="email">Adresse e-mail</label><br>
+    <label for="email">e-mail</label><br>
     <input type="email" id="email" name="email" required><br><br>
 
-    <label for="password">Mot de passe</label><br>
+    <label for="password">Password</label><br>
     <input type="password" id="password" name="password" required
            pattern="(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,}"
-           title="Au moins 8 caractères, avec une majuscule, une minuscule et un chiffre"><br><br>
+           title="8 chars, 1 caps, 1 special char"><br><br>
 
-    <label for="password_confirm">Confirmation du mot de passe</label><br>
+    <label for="password_confirm">Confirm it</label><br>
     <input type="password" id="password_confirm" name="password_confirm" required><br><br>
 
-    <button type="submit">Créer mon compte</button>
+    <button type="submit">Create my account</button>
 </form>
 
-<p>Déjà inscrit ? <a href="/login">Connexion</a></p>
+<p>Already registered? <a href="/login">Login</a></p>

@@ -1,4 +1,4 @@
-<h2>Paramètres du compte</h2>
+<h2>Settings</h2>
 
 <?php if (!empty($errors)): ?>
     <ul style="color:red;">
@@ -7,11 +7,11 @@
         <?php endforeach; ?>
     </ul>
 <?php elseif ($success): ?>
-    <p style="color:green;">Mise à jour réussie !</p>
+    <p style="color:green;">Update done!</p>
 <?php endif; ?>
 
 <form method="post">
-    <label>Nom d'utilisateur</label>
+    <label>Username</label>
     <input type="text" name="username" value="<?= htmlspecialchars($user['username']) ?>" required>
 
     <label>Email</label>
@@ -19,15 +19,22 @@
 
     <hr>
 
-    <label>Nouveau mot de passe</label>
-    <input type="password" name="new_password" placeholder="(laisser vide si inchangé)">
-    <label>Confirmer le nouveau mot de passe</label>
+    <label>New password</label>
+    <input type="password" name="new_password" placeholder="(leave empty to keep current password)">
+    <label>Confirm the new password</label>
     <input type="password" name="confirm_password">
 
     <hr>
+    <hr>
 
-    <label>Mot de passe actuel (obligatoire)</label>
+    <label>
+        <input type="checkbox" name="notif"
+            value="1" <?= $user['notif'] ? 'checked' : '' ?>>
+        Receive notifications
+    </label>
+
+    <label>Actual password</label>
     <input type="password" name="current_password" required>
 
-    <button type="submit">Mettre à jour</button>
+    <button type="submit">Update</button>
 </form>

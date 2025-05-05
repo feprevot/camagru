@@ -26,62 +26,72 @@ async function loadImages() {
             div.innerHTML = `
                 <img src="/uploads/${img.filename}" width="400">
                 <p><strong>${img.username}</strong></p>
-
-                <button class="like-btn" data-id="${img.id}">
+            
+                <button class="like-btn ${img.liked ? 'liked' : ''}" data-id="${img.id}">
                     ❤️ <span class="like-count">${img.likes}</span>
                 </button>
-
+            
                 <div class="comments" data-id="${img.id}">
-                    ${(img.comments || []).map(c => `<p><strong>${c.username}:</strong> ${c.content}</p>`).join('')}
+                    ${(img.comments || []).map(c =>
+                    `<p><strong>${c.username}:</strong> ${c.content}</p>`).join('')}
                 </div>
-
+            
                 <form class="comment-form" data-id="${img.id}">
-                    <input type="text" name="comment" placeholder="Votre commentaire" required>
-                    <button type="submit">Envoyer</button>
+                    <input type="text" name="comment" placeholder="Your com" required>
+                    <button type="submit">Send</button>
                 </form>
-            `;
+            `;        
             container.appendChild(div);
         });
 
         currentPage++;
     } catch (err) {
-        console.error("Erreur lors du chargement des images :", err);
+        console.error("err images :", err);
     } finally {
         loading = false;
     }
 }
 
-// Scroll infini
 window.addEventListener('scroll', () => {
     if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 300) {
         loadImages();
     }
 });
 
-// Premier chargement
 loadImages();
 
-// Gestion des likes
 container.addEventListener('click', async e => {
     if (e.target.classList.contains('like-btn')) {
         const imageId = e.target.dataset.id;
+
         try {
-            const res = await fetch('/like', {
+            const res  = await fetch('/like', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ image_id: imageId })
             });
-            const result = await res.json();
-            if (result.status && result.count !== undefined) {
-                e.target.querySelector('.like-count').innerText = result.count;
+
+            const text = await res.text();
+            let result;
+            try {                      
+                result = JSON.parse(text);
+            } catch {
+                console.error('response non‑JSON :', text);
+                return;
             }
+
+            if (result.status && result.likes !== undefined) {
+                e.target.querySelector('.like-count').innerText = result.likes;
+                e.target.classList.toggle('liked', result.status === 'liked');
+            }
+
         } catch (err) {
-            console.error("Erreur like :", err);
+            console.error('error like :', err);
         }
     }
 });
 
-// Gestion des commentaires
+
 container.addEventListener('submit', async e => {
     if (e.target.classList.contains('comment-form')) {
         e.preventDefault();
@@ -103,7 +113,7 @@ container.addEventListener('submit', async e => {
             commentDiv.innerHTML += `<p><strong>${newComment.username}:</strong> ${newComment.content}</p>`;
             input.value = '';
         } catch (err) {
-            console.error("Erreur commentaire :", err);
+            console.error("err com :", err);
         }
     }
 });

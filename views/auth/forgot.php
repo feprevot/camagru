@@ -1,6 +1,6 @@
-<h2>Mot de passe oublié</h2>
+<h2>Forget your password</h2>
 <form method="post">
-    <label>Adresse e-mail</label>
+    <label>e-mail</label>
     <input type="email" name="email" required>
-    <button type="submit">Envoyer un lien</button>
+    <button type="submit">Send a link</button>
 </form>

@@ -4,6 +4,7 @@ CREATE TABLE IF NOT EXISTS users (
     email VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     is_confirmed BOOLEAN DEFAULT FALSE,
+    notif BOOLEAN DEFAULT TRUE,
     confirmation_token VARCHAR(64),
     reset_token VARCHAR(64),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP

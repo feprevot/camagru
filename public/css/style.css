@@ -1,7 +1,154 @@
-body {
-    background-color: #fafafa;
-    font-family: Arial, sans-serif;
-    text-align: center;
-    margin: 0;
-    padding: 0;
-}
+/* ------------------------
+   RESET & BASE TYPO
+   ------------------------ */
+   *,
+   *::before,
+   *::after {
+       box-sizing: border-box;
+       margin: 0;
+       padding: 0;
+   }
+   
+   html { scroll-behavior: smooth; }
+   
+   body {
+       font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+       font-size: 16px;
+       line-height: 1.5;
+       color: #333;
+       background: #f7f7f7;
+       min-height: 100vh;
+       display: flex;
+       flex-direction: column;
+   }
+   
+   /* ------------------------
+      LAYOUT
+      ------------------------ */
+   header,
+   footer {
+       background: #ffffff;
+       border-bottom: 1px solid #e5e5e5;
+       padding: 1rem 2rem;
+   }
+   
+   footer {
+       border-top: 1px solid #e5e5e5;
+       border-bottom: none;
+       margin-top: auto;          /* colle le footer en bas */
+       font-size: 0.875rem;
+       color: #666;
+   }
+   
+   main {
+       width: 100%;
+       max-width: 900px;
+       margin: 2rem auto;
+       padding: 0 1rem;
+   }
+   
+   /* ------------------------
+      FORMULAIRES
+      ------------------------ */
+   form {
+       display: flex;
+       flex-direction: column;
+       gap: 0.8rem;
+       margin: 1rem 0;
+   }
+   
+   input,
+   button,
+   select,
+   textarea {
+       font: inherit;
+       padding: 0.6rem 0.8rem;
+       border: 1px solid #ccc;
+       border-radius: 4px;
+   }
+   
+   input:focus,
+   textarea:focus,
+   select:focus {
+       outline: none;
+       border-color: #0077ff;
+       box-shadow: 0 0 0 2px #0077ff33;
+   }
+   
+   button {
+       cursor: pointer;
+       background: #0077ff;
+       color: #fff;
+       border: none;
+       transition: background 0.2s;
+   }
+   
+   button:hover {
+       background: #005fd1;
+   }
+   
+   button:disabled {
+       opacity: 0.6;
+       cursor: default;
+   }
+   
+   /* ------------------------
+      GALERIE
+      ------------------------ */
+   .image-block {
+       background: #fff;
+       border: 1px solid #e0e0e0;
+       border-radius: 6px;
+       padding: 1rem;
+       margin-bottom: 1.5rem;
+       box-shadow: 0 1px 3px #0000000d;
+   }
+   
+   .image-block img {
+       width: 100%;
+       height: auto;
+       border-radius: 4px;
+   }
+   
+   .like-btn {
+       background: none;
+       border: none;
+       font-size: 1.2rem;
+       margin-top: 0.5rem;
+   }
+   
+   .like-btn.liked {
+       color: #e84118;    /* rouge instagram‑like */
+   }
+   
+   .comments {
+       margin-top: 0.8rem;
+       text-align: left;
+   }
+   
+   .comments p {
+       font-size: 0.9rem;
+       margin-bottom: 0.3rem;
+   }
+   
+   .comment-form {
+       display: flex;
+       gap: 0.5rem;
+       margin-top: 0.8rem;
+   }
+   
+   .comment-form input {
+       flex: 1;
+   }
+   
+   /* ------------------------
+      RESPONSIVE
+      ------------------------ */
+   @media (min-width: 600px) {
+       .gallery-grid {
+           display: grid;
+           grid-template-columns: repeat(auto-fill, minmax(250px,1fr));
+           gap: 1rem;
+       }
+   }
+   

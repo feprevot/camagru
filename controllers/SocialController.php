@@ -1,13 +1,10 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-header('Content-Type: application/json');
-
 require_once __DIR__ . '/../models/social.php';
 
 function like_image() {
-    session_start();
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
     header('Content-Type: application/json');
 
     if (!isset($_SESSION['user_id'])) {
@@ -31,7 +28,9 @@ function like_image() {
 }
 
 function comment_image() {
-    session_start();
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
     header('Content-Type: application/json');
 
     if (!isset($_SESSION['user_id'])) {
@@ -50,6 +49,24 @@ function comment_image() {
     }
 
     add_comment($_SESSION['user_id'], $data['image_id'], $data['content']);
+    global $pdo;
+
+    $stmt = $pdo->prepare("
+        SELECT users.email, users.notif
+        FROM images
+        JOIN users ON images.user_id = users.id
+        WHERE images.id = ?
+    ");
+    $stmt->execute([$data['image_id']]);
+    $owner = $stmt->fetch();
+
+    if ($owner && $owner['notif']) {
+        $subject = "Nouveau commentaire sur votre photo";
+        $msg = "Bonjour,\n\nUn utilisateur a commenté votre photo :\n\n"
+            . $data['content'] . "\n\nÀ bientôt sur Camagru !";
+        mail($owner['email'], $subject, $msg, "From: no-reply@camagru.local");
+    }
+
 
     global $pdo;
     $stmt = $pdo->prepare("SELECT username FROM users WHERE id = ?");

@@ -10,11 +10,10 @@
 <header>
     <h1>Camagru</h1>
     <nav>
-        <a href="/">Accueil</a> |
-        <a href="/gallery">Galerie</a> |
-        <a href="/edit">Éditer une image</a> |
-        <a href="/settings">Paramètres</a> |
-        <a href="/logout">Se déconnecter</a>
+        <a href="/gallery">Feed</a> |
+        <a href="/edit">Publish</a> |
+        <a href="/settings">Settings</a> |
+        <a href="/logout">Disconnect</a>
     </nav>
 </header>
 

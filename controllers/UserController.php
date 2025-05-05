@@ -23,6 +23,7 @@ function settings() {
         $current_password = $_POST['current_password'] ?? '';
         $new_password = $_POST['new_password'] ?? '';
         $confirm_password = $_POST['confirm_password'] ?? '';
+        $notif = isset($_POST['notif']) ? 1 : 0;
 
         if (!password_verify($current_password, $user['password'])) {
             $errors[] = "Mot de passe actuel incorrect.";
@@ -36,13 +37,17 @@ function settings() {
             }
 
             if (empty($errors)) {
-                $updateQuery = "UPDATE users SET username = :username, email = :email";
+                $updateQuery  = "UPDATE users
+                 SET username = :username,
+                     email    = :email,
+                     notif    = :notif";   
+
                 $params = [
                     ':username' => $username,
-                    ':email' => $email,
-                    ':id' => $userId
+                    ':email'    => $email,
+                    ':notif'    => $notif,
+                    ':id'       => $userId
                 ];
-
                 if ($new_password) {
                     $updateQuery .= ", password = :password";
                     $params[':password'] = password_hash($new_password, PASSWORD_DEFAULT);

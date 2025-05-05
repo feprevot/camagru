@@ -117,19 +117,39 @@ function upload_image() {
     }
 }
 
-function api_gallery() {
-    global $pdo;
+require_once __DIR__ . '/../models/social.php';
 
-    $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
-    $limit = 5;
+function api_gallery() {
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+
+    $user_id = $_SESSION['user_id'] ?? null;
+
+    $page   = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+    $limit  = 5;
     $offset = ($page - 1) * $limit;
 
-    $stmt = $pdo->prepare("SELECT images.*, users.username FROM images JOIN users ON images.user_id = users.id ORDER BY created_at DESC LIMIT :limit OFFSET :offset");
-    $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+    global $pdo;
+    $stmt = $pdo->prepare("
+        SELECT images.id, images.filename, images.created_at,
+               users.username
+        FROM images
+        JOIN users ON images.user_id = users.id
+        ORDER BY images.created_at DESC
+        LIMIT :limit OFFSET :offset
+    ");
+    $stmt->bindValue(':limit',  $limit , PDO::PARAM_INT);
     $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
     $stmt->execute();
 
     $images = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    foreach ($images as &$img) {
+        $img['likes']    = count_likes($img['id']);       
+        $img['comments'] = get_comments($img['id']);     
+        $img['liked']    = $user_id ? has_liked($user_id, $img['id']) : false;
+    }
 
     header('Content-Type: application/json');
     echo json_encode($images);

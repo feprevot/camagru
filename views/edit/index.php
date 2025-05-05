@@ -1,4 +1,4 @@
-<h2>Éditeur d’image</h2>
+<h2>Publish</h2>
 
 <div id="editor" style="display: flex; flex-wrap: wrap; gap: 2rem; align-items: flex-start;">
     <div>
@@ -11,16 +11,16 @@
         <canvas id="canvas" style="display: none;"></canvas>
 
         <div style="margin-top: 1rem;">
-            <label for="overlay-select">Superposable :</label>
+            <label for="overlay-select">Overlay :</label>
             <select id="overlay-select">
-                <option value="">-- Choisir un overlay --</option>
-                <option value="/images/cadre1.png">Cadre 1</option>
+                <option value="">-- Get an overlay --</option>
+                <option value="/images/cadre1.png">good 1</option>
                 <option value="/images/cat-laser.png">Chat laser</option>
             </select>
 
-            <button id="capture-btn" disabled>Capturer</button>
+            <button id="capture-btn" disabled>Catch it</button>
             <form id="upload-form" enctype="multipart/form-data" method="POST" action="/upload">
-                <label for="file">Ou téléversez une image :</label>
+                <label for="file">Upload :</label>
                 <input type="file" name="file" accept="image/*" required>
                 <input type="submit" value="Envoyer">
             </form>
@@ -28,12 +28,12 @@
     </div>
 
     <aside>
-        <h3>Vos images</h3>
+        <h3>Your post</h3>
         <div class="thumbnails" style="display: flex; flex-direction: column; gap: 0.5rem;">
             <?php foreach ($images as $img): ?>
                 <div style="position: relative;">
                     <img src="/uploads/<?= htmlspecialchars($img['filename']) ?>" width="120">
-                    <form method="POST" action="/delete" onsubmit="return confirm('Supprimer cette image ?');">
+                    <form method="POST" action="/delete" onsubmit="return confirm('Delete?');">
                         <input type="hidden" name="filename" value="<?= htmlspecialchars($img['filename']) ?>">
                         <button type="submit">🗑️</button>
                     </form>
