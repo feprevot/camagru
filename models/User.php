@@ -57,7 +57,7 @@ function send_confirmation_email($email, $token) {
     $subject = "Confirmation of your account";
     $link = "https://localhost:8443/confirm?token=" . urlencode($token);
 
-    $message = "Hi there!\n\n Please confirm your account by clicking the link below:\n";
+    $message = "Hi there!\n\n Please confirm your account by clicking the link below:\n$link\n";
     $headers = "From: no-reply@camagru.local";
 
     return mail($email, $subject, $message, $headers);

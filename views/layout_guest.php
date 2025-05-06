@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <title>Camagru</title>
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/style_guest.css">
 </head>
 <body>
 

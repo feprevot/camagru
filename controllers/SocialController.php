@@ -63,7 +63,7 @@ function comment_image() {
     if ($owner && $owner['notif']) {
         $subject = "New comment on your photo";
         $msg = "Hi you have a new comment  :\n\n"
-            . $data['content'] . "\n\nÀ bientôt sur Camagru !";
+            . $data['content'] . "\n\nSee you soon on Camagru !";
         mail($owner['email'], $subject, $msg, "From: no-reply@camagru.local");
     }
 

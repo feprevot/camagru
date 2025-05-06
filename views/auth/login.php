@@ -18,5 +18,5 @@
     <button type="submit">Login</button>
 </form>
 
-<p><a href="/forgot">Forgot password ?</a></p>
-<p>Not registered ? <a href="/register">Create an account</a></p>
+<p class="here"><a href="/forgot">Forgot password ?</a></p>
+<p class="here" >Not registered ? <a href="/register">Create an account</a></p>

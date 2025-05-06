@@ -57,3 +57,14 @@ function sendImage(dataUrl){
     .then(()  => { alert('Image saved !'); location.reload(); })
     .catch(err=> alert('Erreur : '+err));
 }
+
+document.getElementById('upload-file').addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const validTypes = ['image/png'];
+    if (!validTypes.includes(file.type)) {
+        alert("Only PNG files are allowed.");
+        e.target.value = '';
+    }
+});

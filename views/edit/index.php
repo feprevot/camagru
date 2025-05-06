@@ -19,33 +19,32 @@
                 <option value="/images/Bunny.png">Bunny Ears</option>
             </select>
 
-            <button id="capture-btn" disabled>Catch it</button>
+            <button id="capture-btn" disabled>Cheese</button>
             <form id="upload-form" enctype="multipart/form-data" method="POST" action="/upload">
                 <label for="file">Upload :</label>
-                <input type="file" name="file" accept="image/*" required>
-                <input type="submit" value="Envoyer">
+                <input type="file" name="file" id="upload-file" accept="image/png" required>
+                <input type="submit" value="Send">
             </form>
         </div>
     </div>
 
     <aside>
         <h3>Your post</h3>
-        <div class="thumbnails" style="display: flex; flex-direction: column; gap: 0.5rem;">
+        <div class="thumbnails">
             <?php foreach ($images as $img): ?>
-                <div style="position: relative;">
-                    <img src="/uploads/<?= htmlspecialchars($img['filename']) ?>" width="120">
-                    <form method="POST" action="/delete" onsubmit="return confirm('Delete?');">
-                        <input type="hidden" name="filename" value="<?= htmlspecialchars($img['filename']) ?>">
-                        <button type="submit">🗑️</button>
+                <div class="thumb-item">
+                    <img src="/uploads/<?= htmlspecialchars($img['filename']) ?>">
 
-                    </form>
-                    <a href="https://twitter.com/intent/tweet?text=Check%20out%20my%20photo%20on%20Camagru!&url=<?= urlencode('https://localhost:8443/uploads/' . $img['filename']) ?>" 
-                            target="_blank" 
-                            style="margin-left: 0.5rem;">🔗</a>
+                    <div class="thumb-actions">
+                        <form method="POST" action="/delete" onsubmit="return confirm('Delete?');">
+                            <input type="hidden" name="filename" value="<?= htmlspecialchars($img['filename']) ?>">
+                            <button type="submit" title="Delete">🗑️</button>
+                        </form>
+                    </div>
                 </div>
             <?php endforeach; ?>
-
         </div>
+
     </aside>
 </div>
 

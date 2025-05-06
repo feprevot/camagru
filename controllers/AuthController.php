@@ -14,7 +14,7 @@ function register()
         $password_confirm = $_POST['password_confirm'] ?? '';
 
         if ($username === '' || $email === '' || $password === '' || $password_confirm === '') {
-            $errors[] = "Tous les champs sont obligatoires.";
+            $errors[] = "Everything required.";
         }
 
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -26,7 +26,7 @@ function register()
         }
 
         if (!preg_match('/(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,}/', $password)) {
-            $errors[] = "Mot de passe trop faible.";
+            $errors[] = "Password too easy.";
         }
 
         if (user_exists($email, $username)) {
@@ -183,10 +183,10 @@ function reset_password() {
         $errors = [];
 
         if ($pass !== $confirm) {
-            $errors[] = "Les mots de passe ne correspondent pas.";
+            $errors[] = "Password does not match.";
         }
         if (!preg_match('/(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,}/', $pass)) {
-            $errors[] = "Mot de passe trop faible.";
+            $errors[] = "Password too easy.";
         }
 
         if (empty($errors)) {

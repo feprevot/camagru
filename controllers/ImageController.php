@@ -28,27 +28,71 @@ function edit_page() {
     $content = __DIR__ . '/../views/edit/index.php';
     include __DIR__ . '/../views/layout.php';
 }
-
 function upload_image()
 {
     if (!isset($_SESSION['user_id'])) {
         http_response_code(401);
-        exit("Non autorisé");
+        header("Location: /edit");
+        exit("Unauthorized");
+    }
+
+    if (!empty($_FILES['file']) && $_FILES['file']['error'] === UPLOAD_ERR_OK) {
+        $tmpName = $_FILES['file']['tmp_name'];
+        $filename = uniqid('img_') . '.png';
+        $uploadDir = __DIR__ . '/../public/uploads/';
+        $destination = $uploadDir . $filename;
+
+        if (!is_dir($uploadDir)) {
+            mkdir($uploadDir, 0755, true);
+        }
+        $allowedTypes = ['image/png'];
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $mime = finfo_file($finfo, $tmpName);
+        finfo_close($finfo);
+        
+        if (!in_array($mime, $allowedTypes)) {
+            http_response_code(400);
+            header("Location: /edit");
+            exit("Unorthorized file type");
+        }
+        
+        if (move_uploaded_file($tmpName, $destination)) {
+            save_image($_SESSION['user_id'], $filename);
+            header("Location: /edit");
+            exit;
+        } else {
+            http_response_code(500);
+            header("Location: /edit");
+            exit("Error during upload");
+        }
     }
 
     $payload = json_decode(file_get_contents('php://input'), true);
     if (!$payload || !isset($payload['image'])) {
-        http_response_code(400); exit('Bad request');
+        http_response_code(400); 
+        header("Location: /edit");
+        exit('Bad request');
     }
 
     if (!preg_match('#^data:image/[^;]+;base64,#', $payload['image'])) {
-        http_response_code(400); exit('Format non supporté');
+        http_response_code(400); 
+        header("Location: /edit");
+        exit('Format non supporté');
     }
-    $raw = base64_decode(substr($payload['image'], strpos($payload['image'], ',')+1));
-    if ($raw === false) { http_response_code(400); exit('decode error'); }
+
+    $raw = base64_decode(substr($payload['image'], strpos($payload['image'], ',') + 1));
+    if ($raw === false) { 
+        http_response_code(400); 
+        header("Location: /edit");
+        exit('decode error'); 
+    }
 
     $src = imagecreatefromstring($raw);
-    if (!$src) { http_response_code(500); exit('GD error'); }
+    if (!$src) { 
+        http_response_code(500); 
+        header("Location: /edit");
+        exit('GD error'); 
+    }
 
     $ovPath = $payload['overlay'] ?? '';
     if ($ovPath && $ovPath !== 'none') {
@@ -57,28 +101,38 @@ function upload_image()
             $overlay = imagecreatefrompng($ovAbs);
             $dstW = imagesx($src);
             $dstH = imagesy($src);
-            $tmp   = imagecreatetruecolor($dstW, $dstH);
+            $tmp = imagecreatetruecolor($dstW, $dstH);
             imagesavealpha($tmp, true);
-            $trans = imagecolorallocatealpha($tmp, 0,0,0,127);
-            imagefill($tmp, 0,0, $trans);
-            imagecopyresampled($tmp, $overlay, 0,0, 0,0, $dstW,$dstH,
-                               imagesx($overlay), imagesy($overlay));
-
-            imagecopy($src, $tmp, 0,0, 0,0, $dstW, $dstH);
-            imagedestroy($tmp); imagedestroy($overlay);
+            $trans = imagecolorallocatealpha($tmp, 0, 0, 0, 127);
+            imagefill($tmp, 0, 0, $trans);
+            imagecopyresampled($tmp, $overlay, 0, 0, 0, 0, $dstW, $dstH, imagesx($overlay), imagesy($overlay));
+            imagecopy($src, $tmp, 0, 0, 0, 0, $dstW, $dstH);
+            imagedestroy($tmp);
+            imagedestroy($overlay);
         }
     }
 
-    $name = uniqid('img_').'.png';
-    $path = __DIR__ . '/../public/uploads/'.$name;
+    $filename = uniqid('img_') . '.png';
+    $uploadDir = __DIR__ . '/../public/uploads/';
+    $path = $uploadDir . $filename;
+
+    if (!is_dir($uploadDir)) {
+        mkdir($uploadDir, 0755, true);
+    }
+
     imagesavealpha($src, true);
-    if (!imagepng($src, $path)) { imagedestroy($src); http_response_code(500); exit('save error'); }
+    if (!imagepng($src, $path)) {
+        imagedestroy($src);
+        http_response_code(500);
+        header("Location: /edit");
+        exit('save error');
+    }
     imagedestroy($src);
 
-    save_image($_SESSION['user_id'], $name);
-
+    save_image($_SESSION['user_id'], $filename);
     echo 'ok';
 }
+
 
 
 require_once __DIR__ . '/../models/social.php';

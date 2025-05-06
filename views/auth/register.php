@@ -26,4 +26,4 @@
     <button type="submit">Create my account</button>
 </form>
 
-<p>Already registered ? <a href="/login">Login</a></p>
+<p class="here">Already registered ? <a href="/login">Login</a></p>

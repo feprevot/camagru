@@ -20,28 +20,40 @@ async function loadImages() {
         }
 
         images.forEach(img => {
+            const firstFive = (img.comments || []).slice(0, 5);
+            const rest      = (img.comments || []).slice(5);
+        
             const div = document.createElement('div');
             div.classList.add('image-block');
+        
             div.innerHTML = `
                 <img src="/uploads/${img.filename}" width="400">
                 <p><strong>${img.username}</strong></p>
-            
+        
                 <button class="like-btn ${img.liked ? 'liked' : ''}" data-id="${img.id}">
                     ❤️ <span class="like-count">${img.likes}</span>
                 </button>
-            
+        
                 <div class="comments" data-id="${img.id}">
-                    ${(img.comments || []).map(c =>
-                    `<p><strong>${c.username}:</strong> ${c.content}</p>`).join('')}
+                    ${firstFive.map(c => `<p><strong>${c.username}:</strong> ${c.content}</p>`).join('')}
+                    ${rest.length
+                        ? `<div class="comments-extra" style="display:none">
+                               ${rest.map(c => `<p><strong>${c.username}:</strong> ${c.content}</p>`).join('')}
+                           </div>
+                           <button class="toggle-comments" data-id="${img.id}">
+                               Show ${rest.length} more
+                           </button>`
+                        : ''}
                 </div>
-            
+        
                 <form class="comment-form" data-id="${img.id}">
                     <input type="text" name="comment" placeholder="Your com" required>
                     <button type="submit">Send</button>
                 </form>
-            `;        
+            `;
             container.appendChild(div);
         });
+        
 
         currentPage++;
     } catch (err) {
@@ -118,3 +130,14 @@ container.addEventListener('submit', async e => {
     }
 });
 
+container.addEventListener('click', e => {
+
+    if (e.target.classList.contains('toggle-comments')) {
+        const btn   = e.target;
+        const extra = btn.previousElementSibling;
+        const open  = extra.style.display !== 'none';
+
+        extra.style.display = open ? 'none' : 'block';
+        btn.textContent = open ? `Show ${extra.children.length} more` : 'Hide comments';
+    }
+});
