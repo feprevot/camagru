@@ -139,8 +139,8 @@ function forgot_password() {
                 $link = "https://localhost:8443/reset?token=$token";
                 mail(
                     $email,
-                    "Réinitialisation du mot de passe Camagru",
-                    "Bonjour,\n\nCliquez ici pour réinitialiser votre mot de passe :\n$link",
+                    "Reset Password",
+                    "Hello,\n\nClick here to reset your password:\n$link",
                     "From: no-reply@camagru.local"
                 );
             }

@@ -35,13 +35,11 @@ overlaySelect.addEventListener('change', () => {
 });
 
 captureBtn.addEventListener('click', () => {
-  // on dessine SEULEMENT la webcam
   const ctx = canvas.getContext('2d');
   canvas.width  = video.videoWidth;
   canvas.height = video.videoHeight;
   ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-  // on pré‑visualise toujours l’overlay, mais on n’envoie pas le mix
   sendImage(canvas.toDataURL('image/png'));
 });
 
@@ -56,6 +54,6 @@ function sendImage(dataUrl){
         })
     })
     .then(res => res.text())
-    .then(()  => { alert('Image enregistrée !'); location.reload(); })
+    .then(()  => { alert('Image saved !'); location.reload(); })
     .catch(err=> alert('Erreur : '+err));
 }

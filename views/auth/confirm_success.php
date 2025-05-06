@@ -1,2 +1,2 @@
-<p class="success">Votre compte a bien été confirmé !</p>
-<p><a href="/login">Se connecter</a></p>
+<p class="success">Your account is confirmed !</p>
+<p><a href="/login">Login?</a></p>
