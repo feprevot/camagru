@@ -18,11 +18,11 @@ function register()
         }
 
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $errors[] = "E‑mail invalide.";
+            $errors[] = "invalid email format.";
         }
 
         if ($password !== $password_confirm) {
-            $errors[] = "Les mots de passe ne correspondent pas.";
+            $errors[] = "Passwords do not match.";
         }
 
         if (!preg_match('/(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,}/', $password)) {
@@ -30,7 +30,7 @@ function register()
         }
 
         if (user_exists($email, $username)) {
-            $errors[] = "Cet e‑mail ou ce nom d’utilisateur est déjà utilisé.";
+            $errors[] = "Mail or username already exists.";
         }
 
         if (empty($errors)) {
@@ -46,7 +46,7 @@ function register()
                 return;
             }
 
-            $errors[] = "Erreur interne lors de la création du compte.";
+            $errors[] = "Error creating user.";
         }
     }
 
@@ -73,9 +73,9 @@ function login() {
             $user = get_user_by_username($username);
 
             if (!$user || !password_verify($password, $user['password'])) {
-                $errors[] = "Nom d’utilisateur ou mot de passe incorrect.";
+                $errors[] = "Username or password is incorrect.";
             } elseif (!$user['is_confirmed']) {
-                $errors[] = "Votre compte n’est pas encore confirmé.";
+                $errors[] = "Your account is not confirmed. Please check your email.";
             } else {
                 $_SESSION['user_id']  = $user['id'];
                 $_SESSION['username'] = $user['username'];
