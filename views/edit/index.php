@@ -37,7 +37,11 @@
                     <form method="POST" action="/delete" onsubmit="return confirm('Delete?');">
                         <input type="hidden" name="filename" value="<?= htmlspecialchars($img['filename']) ?>">
                         <button type="submit">🗑️</button>
+
                     </form>
+                    <a href="https://twitter.com/intent/tweet?text=Check%20out%20my%20photo%20on%20Camagru!&url=<?= urlencode('https://localhost:8443/uploads/' . $img['filename']) ?>" 
+                            target="_blank" 
+                            style="margin-left: 0.5rem;">🔗</a>
                 </div>
             <?php endforeach; ?>
 
