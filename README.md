@@ -14,9 +14,7 @@ It allows users to **capture photos via webcam or upload PNG images**, apply fun
 - **Server**: Apache 2.4 (Dockerized)
 - **Mailing**: msmtp + Gmail SMTP (for notifications)
 - **Containerization**: Docker + Docker Compose
-- **Other Tools**:
-  - GD library for server-side image processing
-  - ngrok (for development/testing image sharing)
+- **Other Tools**: GD library for server-side image processing
 
 ---
 
@@ -46,7 +44,7 @@ The project follows a classic **MVC (Model-View-Controller)** pattern:
 - ✅ Email confirmation required for login
 - ✅ Webcam photo capture (client-side preview)
 - ✅ PNG upload with server-side processing
-- ✅ Overlay filters (frames, bunny ears, etc.)
+- ✅ Overlay filters
 - ✅ Public gallery (infinite scroll + pagination fallback)
 - ✅ Likes & comments
 - ✅ Notification via email on new comment (user preference toggle)
@@ -62,7 +60,7 @@ The project follows a classic **MVC (Model-View-Controller)** pattern:
 
 ### 📸 Image Upload Flow
 - Webcam: Capture preview → send PNG → merge overlay on server (GD) → save
-- Upload: User can upload PNG (JPEGs are rejected) → server saves validated file
+- Upload: User can upload PNG → server saves validated file
 - Images are only stored as .png and validated both client & server side.
 
 ### 📬 Email Notifications
