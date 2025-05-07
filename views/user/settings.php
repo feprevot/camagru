@@ -25,13 +25,14 @@
     <input type="password" name="confirm_password">
 
     <hr>
-    <hr>
 
     <label>
         <input type="checkbox" name="notif"
             value="1" <?= $user['notif'] ? 'checked' : '' ?>>
         Receive notifications
     </label>
+    
+    <hr>
 
     <label>Actual password</label>
     <input type="password" name="current_password" required>
