@@ -1,12 +1,12 @@
 
-# 📸 Camagru
+#  Camagru
 
 Camagru is a **mini Instagram-like web application** built as part of the 42 school curriculum.  
 It allows users to **capture photos via webcam or upload PNG images**, apply fun overlays (frames, bunny ears, etc.), and share them in a public gallery. Logged-in users can **like, comment**, and receive **notifications**.
 
 ---
 
-## ⚙️ Tech Stack
+##  Tech Stack
 
 - **Backend**: PHP 8.2 (Vanilla PHP)
 - **Frontend**: HTML5, CSS3, Vanilla JS
@@ -18,7 +18,7 @@ It allows users to **capture photos via webcam or upload PNG images**, apply fun
 
 ---
 
-## 🧱 Architecture
+##  Architecture
 
 The project follows a classic **MVC (Model-View-Controller)** pattern:
 
@@ -37,35 +37,35 @@ The project follows a classic **MVC (Model-View-Controller)** pattern:
 
 ---
 
-## 🚀 Features
+##  Features
 
 ### Core Features
-- ✅ User authentication (register, login, reset password)
-- ✅ Email confirmation required for login
-- ✅ Webcam photo capture (client-side preview)
-- ✅ PNG upload with server-side processing
-- ✅ Overlay filters
-- ✅ Public gallery (infinite scroll + pagination fallback)
-- ✅ Likes & comments
-- ✅ Notification via email on new comment (user preference toggle)
+-  User authentication (register, login, reset password)
+-  Email confirmation required for login
+-  Webcam photo capture (client-side preview)
+-  PNG upload with server-side processing
+-  Overlay filters
+-  Public gallery (infinite scroll + pagination fallback)
+-  Likes & comments
+-  Notification via email on new comment (user preference toggle)
 
 ### Bonus Features
-- ✨ Infinite scroll in the gallery
-- ✨ Live overlay preview on webcam
-- ✨ Dark mode (creative version)
-- ✨ Guest-only and auth-only layouts
+-  Infinite scroll in the gallery
+-  Live overlay preview on webcam
+-  Dark mode (creative version)
+-  Guest-only and auth-only layouts
 
 ---
 
 
-### 📸 Image Upload Flow
+### Image Upload Flow
 - Webcam: Capture preview → send PNG → merge overlay on server (GD) → save
 - Upload: User can upload PNG → server saves validated file
 - Images are only stored as .png and validated both client & server side.
 
-### 📬 Email Notifications
+### Email Notifications
  - On comment: Author receives an email (unless opted-out in settings)
  - SMTP configured with Gmail using msmtp (password via env variable)
 
-###  📚 License
+### License
 This project is for educational use at 42 school.
