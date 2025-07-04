@@ -10,7 +10,7 @@ It allows users to **capture photos via webcam or upload PNG images**, apply fun
 
 - **Backend**: PHP 8.2 (Vanilla PHP)
 - **Frontend**: HTML5, CSS3, Vanilla JS
-- **Database**: MySQL
+- **Database**: MariaDB
 - **Server**: Apache 2.4 (Dockerized)
 - **Mailing**: msmtp + Gmail SMTP (for notifications)
 - **Containerization**: Docker + Docker Compose
@@ -38,7 +38,9 @@ The project follows a classic **MVC (Model-View-Controller)** pattern:
 ---
 
 ##  Features
-
+    To see db :
+        docker compose exec db mariadb -u user -p camagru
+        and use sql com
 ### Core Features
 -  User authentication (register, login, reset password)
 -  Email confirmation required for login
