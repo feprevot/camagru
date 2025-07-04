@@ -48,6 +48,12 @@ function comment_image() {
         return;
     }
 
+    if (mb_strlen($data['content']) > 400) {
+        http_response_code(400);
+        echo json_encode(['error' => 'comment too long']);
+        return;
+    }
+
     add_comment($_SESSION['user_id'], $data['image_id'], $data['content']);
     global $pdo;
 

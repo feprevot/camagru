@@ -1,2 +1,2 @@
-<p class="error">Lien invalide ou déjà utilisé.</p>
-<p><a href="/register">Créer un compte</a></p>
+<p class="error">Link already used</p>
+<p><a href="/register">Create an account</a></p>

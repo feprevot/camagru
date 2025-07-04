@@ -31,7 +31,7 @@ function create_user($username, $email, $hashed_password, $token) {
 function get_user_by_username($username) {
     global $pdo;
 
-    $stmt = $pdo->prepare("SELECT * FROM users WHERE username = :username");
+    $stmt = $pdo->prepare("SELECT * FROM users WHERE BINARY username = :username");
     $stmt->execute([':username' => $username]);
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }

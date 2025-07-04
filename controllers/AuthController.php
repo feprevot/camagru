@@ -146,7 +146,7 @@ function forgot_password() {
             }
         }
 
-        $content = __DIR__ . '/../views/auth/forgot_done.php';
+        $content = __DIR__ . '/../views/auth/forgot.php';
         include __DIR__ . '/../views/layout_guest.php';
         return;
     }
@@ -194,7 +194,6 @@ function reset_password() {
             $pdo->prepare("UPDATE users SET password = :pass, reset_token = NULL WHERE id = :id")
                 ->execute([':pass' => $hashed, ':id' => $user['id']]);
 
-            /* vue de succès */
             $content = __DIR__.'/../views/auth/reset_done.php';
             include __DIR__.'/../views/layout_guest.php';
             return;

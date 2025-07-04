@@ -103,7 +103,6 @@ container.addEventListener('click', async e => {
     }
 });
 
-
 container.addEventListener('submit', async e => {
     if (e.target.classList.contains('comment-form')) {
         e.preventDefault();
@@ -113,6 +112,11 @@ container.addEventListener('submit', async e => {
 
         if (!content) return;
 
+        if (content.length > 400) {
+            alert('com too long');
+            return;
+        }
+
         try {
             const res = await fetch('/comment', {
                 method: 'POST',
@@ -121,6 +125,7 @@ container.addEventListener('submit', async e => {
             });
 
             const newComment = await res.json();
+
             const commentDiv = container.querySelector(`.comments[data-id="${imageId}"]`);
             commentDiv.innerHTML += `<p><strong>${newComment.username}:</strong> ${newComment.content}</p>`;
             input.value = '';
