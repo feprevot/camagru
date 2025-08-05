@@ -9,7 +9,7 @@ function like_image() {
 
     if (!isset($_SESSION['user_id'])) {
         http_response_code(401);
-        echo json_encode(['error' => 'Non autorisé']);
+        echo json_encode(['error' => 'Unauthorized']);
         return;
     }
 
@@ -18,7 +18,7 @@ function like_image() {
 
     if (!isset($data['image_id'])) {
         http_response_code(400);
-        echo json_encode(['error' => 'image_id manquant']);
+        echo json_encode(['error' => 'image_id missing']);
         return;
     }
 
@@ -35,7 +35,7 @@ function comment_image() {
 
     if (!isset($_SESSION['user_id'])) {
         http_response_code(401);
-        echo json_encode(['error' => 'Non autorisé']);
+        echo json_encode(['error' => 'Unauthorized']);
         return;
     }
 
@@ -44,7 +44,7 @@ function comment_image() {
 
     if (!isset($data['image_id'], $data['content']) || trim($data['content']) === '') {
         http_response_code(400);
-        echo json_encode(['error' => 'Données incomplètes']);
+        echo json_encode(['error' => 'Incomplete data']);
         return;
     }
 

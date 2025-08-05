@@ -26,14 +26,14 @@ function settings() {
         $notif = isset($_POST['notif']) ? 1 : 0;
 
         if (!password_verify($current_password, $user['password'])) {
-            $errors[] = "Mot de passe actuel incorrect.";
+            $errors[] = "Wrong current password.";
         } else {
             if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                $errors[] = "Email invalide.";
+                $errors[] = "Invalid email.";
             }
 
             if ($new_password && $new_password !== $confirm_password) {
-                $errors[] = "Les nouveaux mots de passe ne correspondent pas.";
+                $errors[] = "New passwords do not match.";
             }
 
             if (empty($errors)) {

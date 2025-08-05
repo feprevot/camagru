@@ -39,6 +39,7 @@ RUN mkdir -p /var/www/app/public/uploads && \
     chown -R www-data:www-data /var/www/app/public/uploads && \
     chmod -R 755 /var/www/app/public/uploads
 
+RUN apt-get update && apt-get install -y mariadb-client
 
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["apache2-foreground"]

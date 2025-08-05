@@ -54,11 +54,14 @@ The project follows a classic **MVC (Model-View-Controller)** pattern:
 ### Bonus Features
 -  Infinite scroll in the gallery
 -  Live overlay preview on webcam
--  Dark mode (creative version)
 -  Guest-only and auth-only layouts
 
 ---
 
+### To visit db
+- docker compose exec app bash
+- mysql -h db -u user -ppassword camagru
+- SELECT * FROM users;
 
 ### Image Upload Flow
 - Webcam: Capture preview → send PNG → merge overlay on server (GD) → save
@@ -71,3 +74,4 @@ The project follows a classic **MVC (Model-View-Controller)** pattern:
 
 ### License
 This project is for educational use at 42 school.
+
