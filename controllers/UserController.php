@@ -32,38 +32,56 @@ function settings() {
                 $errors[] = "Invalid email.";
             }
 
+            $stmt = $pdo->prepare("SELECT id FROM users WHERE username = :username AND id != :id");
+            $stmt->execute([':username' => $username, ':id' => $userId]);
+            if ($stmt->fetch()) {
+                $errors[] = "Username already taken.";
+            }
+
+            $stmt = $pdo->prepare("SELECT id FROM users WHERE email = :email AND id != :id");
+            $stmt->execute([':email' => $email, ':id' => $userId]);
+            if ($stmt->fetch()) {
+                $errors[] = "Email already in use.";
+            }
+
             if ($new_password && $new_password !== $confirm_password) {
                 $errors[] = "New passwords do not match.";
             }
 
             if (empty($errors)) {
-                $updateQuery  = "UPDATE users
-                 SET username = :username,
-                     email    = :email,
-                     notif    = :notif";   
+                $query = "
+                    UPDATE users
+                    SET username = :username,
+                        email = :email,
+                        notif = :notif";
 
                 $params = [
                     ':username' => $username,
-                    ':email'    => $email,
-                    ':notif'    => $notif,
-                    ':id'       => $userId
+                    ':email' => $email,
+                    ':notif' => $notif,
+                    ':id' => $userId
                 ];
+
                 if ($new_password) {
-                    $updateQuery .= ", password = :password";
+                    $query .= ", password = :password";
                     $params[':password'] = password_hash($new_password, PASSWORD_DEFAULT);
                 }
 
-                $updateQuery .= " WHERE id = :id";
+                $query .= " WHERE id = :id";
 
-                $stmt = $pdo->prepare($updateQuery);
+                $stmt = $pdo->prepare($query);
                 $stmt->execute($params);
 
                 $success = true;
+
                 $_SESSION['username'] = $username;
+
+                $stmt = $pdo->prepare("SELECT * FROM users WHERE id = :id");
+                $stmt->execute([':id' => $userId]);
+                $user = $stmt->fetch();
             }
         }
     }
-
     $content = __DIR__ . '/../views/user/settings.php';
     include __DIR__ . '/../views/layout.php';
 }

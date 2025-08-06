@@ -16,15 +16,11 @@ services:
 
   db:
     image: mariadb
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: camagru
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
+    env_file:
+      - .env
     volumes:
       - db_data:/var/lib/mysql
       - ./docker/sql:/docker-entrypoint-initdb.d
-
 volumes:
   db_data:
   uploads_data:
