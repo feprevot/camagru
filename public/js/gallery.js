@@ -66,7 +66,6 @@ async function loadImages() {
 window.addEventListener('scroll', () => {
     if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 300) {
         loadImages();
-        console.log("Page :", currentPage);
     }
 });
 
